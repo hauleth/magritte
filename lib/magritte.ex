@@ -98,5 +98,5 @@ defmodule Magritte do
     do: locate(rest, pos + 1, found, [arg | args])
 
   defp locate([], _, found, args),
-    do: {:ok, found || 0, args}
+    do: {:ok, found || 0, :lists.reverse(args)}
 end
