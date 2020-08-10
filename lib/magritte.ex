@@ -33,6 +33,13 @@ defmodule Magritte do
 
   The example above is the same as calling `Integer.to_string(10, 2)`.
 
+  You can also join these into longer chains:
+
+  ```elixir
+  iex> 2 |> Integer.to_string(10, ...) |> Integer.parse
+  {1010, ""}
+  ```
+
   The operator `...` can be used only once in the pipeline, otherwise
   it will return compile-time error:
 
@@ -51,7 +58,7 @@ defmodule Magritte do
     :lists.foldl(fun, h, t)
   end
 
-  def unpipe(ast, caller), do: :lists.reverse(unpipe(ast, [], caller))
+  defp unpipe(ast, caller), do: :lists.reverse(unpipe(ast, [], caller))
 
   defp unpipe({:|>, _, [left, right]}, acc, caller) do
     unpipe(right, unpipe(left, acc, caller), caller)
@@ -77,7 +84,7 @@ defmodule Magritte do
 
   defp find_pos(ast), do: {:ok, ast, 0}
 
-  defguard is_empty(a) when a == [] or not is_list(a)
+  defguardp is_empty(a) when a == [] or not is_list(a)
 
   pattern = quote do: {:..., _, var!(args)}
 

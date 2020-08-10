@@ -17,4 +17,8 @@ defmodule MagritteTest do
       Macro.expand(quoted, __ENV__)
     end
   end
+
+  test "works with calls without parens" do
+    assert "1010" == (2 |> Integer.to_string(10, ...))
+  end
 end
