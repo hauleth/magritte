@@ -1,4 +1,13 @@
 defmodule Magritte do
+  @moduledoc """
+  Alternative pipe operator definition.
+
+  ## Usage
+
+  Just drop `use Magritte` at the top of your module and then follow with 
+  documentation for `Margitte.|>/2` below.
+  """
+
   defmacro __using__(_) do
     quote do
       import Kernel, except: [|>: 2]
