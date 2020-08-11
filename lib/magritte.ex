@@ -20,7 +20,7 @@ defmodule Magritte do
 
   This operator introduces the expression on the left hand as an argument to
   the function call on the right hand. The position for given argument is
-  determined by positopn of `...` operator on the right. If that operator
+  determined by positopn of `^_` operator on the right. If that operator
   is not present, then it will use first position as a default.
 
   ## Examples
@@ -36,7 +36,7 @@ defmodule Magritte do
   inserted:
 
   ```elixir
-  iex> 2 |> Integer.to_string(10, ...)
+  iex> 2 |> Integer.to_string(10, ^_)
   "1010"
   ```
 
@@ -45,16 +45,16 @@ defmodule Magritte do
   You can also join these into longer chains:
 
   ```elixir
-  iex> 2 |> Integer.to_string(10, ...) |> Integer.parse
+  iex> 2 |> Integer.to_string(10, ^_) |> Integer.parse
   {1010, ""}
   ```
 
-  The operator `...` can be used only once in the pipeline, otherwise
+  The operator `^_` can be used only once in the pipeline, otherwise
   it will return compile-time error:
 
   ```elixir
-  2 |> Integer.to_string(..., ...)
-  ** (CompileError) Doubled placeholder in Integer.to_string(..., ...)
+  2 |> Integer.to_string(^_, ^_)
+  ** (CompileError) Doubled placeholder in Integer.to_string(^_, ^_)
   ```
   """
   defmacro left |> right do
@@ -95,7 +95,7 @@ defmodule Magritte do
 
   defguardp is_empty(a) when a == [] or not is_list(a)
 
-  pattern = quote do: {:..., _, var!(args)}
+  pattern = quote do: {:^, _, [{:_, _, var!(args)}]}
 
   defp locate([unquote(pattern) | rest], pos, nil, acc) when is_empty(args),
     do: locate(rest, pos + 1, pos, acc)
