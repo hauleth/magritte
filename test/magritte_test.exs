@@ -30,4 +30,20 @@ defmodule MagritteTest do
   end
 
   def id(a, b, c), do: {a, b, c}
+
+  test "can contain variables and functions without parens" do
+    quoted =
+      quote do
+        x |> Integer.to_string(^_)
+      end
+
+    Macro.expand(quoted, __ENV__)
+
+    quoted =
+      quote do
+        x |> foo
+      end
+
+    Macro.expand(quoted, __ENV__)
+  end
 end

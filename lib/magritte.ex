@@ -86,14 +86,15 @@ defmodule Magritte do
     end
   end
 
-  defp find_pos({fun, env, args}) do
+
+  defguardp is_empty(a) when a == [] or not is_list(a)
+
+  defp find_pos({fun, env, args}) when not is_empty(args) do
     with {:ok, found, new_args} <- locate(args, 0, nil, []),
          do: {:ok, {fun, env, new_args}, found}
   end
 
   defp find_pos(ast), do: {:ok, ast, 0}
-
-  defguardp is_empty(a) when a == [] or not is_list(a)
 
   pattern = quote do: {:..., _, var!(args)}
 
