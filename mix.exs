@@ -5,7 +5,7 @@ defmodule Magritte.MixProject do
     [
       app: :magritte,
       description: "Ceci n'est pas une pipe - extended pipe operator",
-      version: "0.1.1",
+      version: "0.1.2",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       docs: [
