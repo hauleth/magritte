@@ -4,8 +4,8 @@ defmodule Magritte do
 
   ## Usage
 
-  Just drop `use Magritte` at the top of your module and then follow with 
-  documentation for `Margitte.|>/2` below.
+  Just add `use Magritte` to the top of your module and then 
+  follow the documentation for `Margitte.|>/2` below.
   """
 
   defmacro __using__(_) do
@@ -16,12 +16,13 @@ defmodule Magritte do
   end
 
   @doc """
-  Enchanced pipe operator.
+  Enhanced pipe operator.
 
-  This operator introduces the expression on the left hand as an argument to
-  the function call on the right hand. The position for given argument is
-  determined by positopn of `...` operator on the right. If that operator
-  is not present, then it will use first position as a default.
+  This operator introduces the expression on the left-hand side as an argument 
+  to the function call on the right-hand side. The `...` placeholder operator  
+  determines the position of the given argument on the right-hand side. 
+
+  If the `...` operator is not present, the first position is used by default.
 
   ## Examples
 
@@ -32,8 +33,8 @@ defmodule Magritte do
 
   The example above is the same as calling `List.flatten([1, [2], 3])`.
 
-  You can pick the position where the result of the left side will be
-  inserted:
+  Using `...` you can pick the position where the result of the left side will 
+  be inserted:
 
   ```elixir
   iex> 2 |> Integer.to_string(10, ...)
