@@ -55,11 +55,11 @@ defmodule Magritte do
 
   ```elixir
   2 |> Integer.to_string(..., ...)
-  ** (CompileError) Doubled placeholder in Integer.to_string(..., ...)
+  ** (ArgumentError) Repeated placeholder in Integer.to_string(..., ...)
   ```
   """
   defmacro left |> right do
-    [{h, _} | t] = unpipe({:|>, [], [left, right]}, __CALLER__)
+    [{h, _} | t] = unpipe({:|>, [], [left, right]})
 
     fun = fn {x, pos}, acc ->
       Macro.pipe(acc, x, pos)
@@ -68,25 +68,22 @@ defmodule Magritte do
     :lists.foldl(fun, h, t)
   end
 
-  defp unpipe(ast, caller), do: :lists.reverse(unpipe(ast, [], caller))
+  defp unpipe(ast), do: :lists.reverse(unpipe(ast, []))
 
-  defp unpipe({:|>, _, [left, right]}, acc, caller) do
-    unpipe(right, unpipe(left, acc, caller), caller)
+  defp unpipe({:|>, _, [left, right]}, acc) do
+    unpipe(right, unpipe(left, acc))
   end
 
-  defp unpipe(ast, acc, %Macro.Env{line: line, file: file}) do
+  defp unpipe(ast, acc) do
     case find_pos(ast) do
       {:ok, new_ast, pos} ->
         [{new_ast, pos} | acc]
 
       {:error, {:already_found, _, _}} ->
-        raise CompileError,
-          file: file,
-          line: line,
-          description: "Doubled placeholder in #{Macro.to_string(ast)}"
+        raise ArgumentError,
+          message: "Repeated placeholder in #{Macro.to_string(ast)}"
     end
   end
-
 
   defguardp is_empty(a) when a == [] or not is_list(a)
 
