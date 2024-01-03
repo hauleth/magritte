@@ -3,7 +3,7 @@
 > Ceci n'est pas une pipe
 
 Simple library that allow using pipe with functions that do not take subject as
-firs argument.
+the first argument.
 
 ## Installation
 
